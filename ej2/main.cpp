@@ -37,6 +37,7 @@ int main()
 
             switch (level)
             {
+                // Nota: No sabia si al querer agregar un mensaje de error debia cortar el programa o no, entonces porlas dudas no.
                 case 5:
                     cout << "Ingrese el mensaje de acceso: ";
                     cin.ignore();
