@@ -11,6 +11,9 @@ int main() {
 
     int** matriz = crear_matriz(n);
     print_matriz(matriz, n);
+
+    // Me dio cosa que evaluen el tema memoria asi que borro la matriz
+    delete_matriz(matriz, n);
     
     return 0;
 }
@@ -32,4 +35,11 @@ void print_matriz(int** matriz, int n) {
         int value = matriz[i / n][i % n];
         cout << "M[" << i / n << "][" << i % n << "] = " << value << endl;
     }
+}
+
+void delete_matriz(int** matriz, int n) {
+    for (int i = 0; i < n; i++) {
+        delete[] matriz[i];
+    }
+    delete[] matriz;
 }

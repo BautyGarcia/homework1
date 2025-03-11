@@ -38,6 +38,9 @@ int main() {
     auto end3 = chrono::high_resolution_clock::now();
     cout << "(Compile-time) Time taken: " << chrono::duration_cast<chrono::nanoseconds>(end3 - start3).count() << " nanoseconds" << endl;
 
+    delete[] c1;
+    delete[] c2;
+
     return 0;
 }
 
