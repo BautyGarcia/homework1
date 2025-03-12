@@ -132,5 +132,13 @@ int main()
     erase(list, 100);
     print_list(list);
 
+    cout << "Pruebo de insertar en el borde" << endl;
+    insert(list, 0, list.size);
+    print_list(list);
+
+    cout << "Pruebo de borrar en el borde" << endl;
+    erase(list, list.size - 1);
+    print_list(list);
+
     return 0;
 }
