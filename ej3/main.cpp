@@ -23,21 +23,21 @@ unique_ptr<Node> create_node(int value) {
 
 void push_front(List &list, int value) {
     auto new_node = create_node(value);
-    new_node->next = move(list.head);
-    list.head = move(new_node);
+    new_node->next = std::move(list.head);
+    list.head = std::move(new_node);
     list.size++;
 }
 
 void push_back(List &list, int value) {
     auto new_node = create_node(value);
     if (list.head == nullptr) {
-        list.head = move(new_node);
+        list.head = std::move(new_node);
     } else {
         auto current = list.head.get();
         while (current->next != nullptr) {
             current = current->next.get();
         }
-        current->next = move(new_node);
+        current->next = std::move(new_node);
     }
     list.size++;
 }
@@ -61,8 +61,8 @@ void insert(List &list, int value, int position) {
     }
 
     auto new_node = create_node(value);
-    new_node->next = move(current->next);
-    current->next = move(new_node);
+    new_node->next = std::move(current->next);
+    current->next = std::move(new_node);
     list.size++;
 }
 
@@ -74,7 +74,7 @@ void erase(List &list, int position) {
     };
 
     if (position == 0) {
-        list.head = move(list.head->next);
+        list.head = std::move(list.head->next);
         list.size--;
         return;
     }
@@ -84,7 +84,7 @@ void erase(List &list, int position) {
         current = current->next.get();
     }
 
-    current->next = move(current->next->next);
+    current->next = std::move(current->next->next);
     list.size--;
 }
 
