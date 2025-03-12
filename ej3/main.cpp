@@ -4,149 +4,133 @@
 
 using namespace std;
 
-class Node {
-    public:
-        unique_ptr<Node> next;
-        int value;
-
-        Node(int value)
-        {
-            this->value = value;
-        }
+struct Node {
+    unique_ptr<Node> next;
+    int value;
 };
 
-class List {
+struct List {
     unique_ptr<Node> head;
-    int size;
-
-    public:
-        List()
-        {
-            size = 0;
-        }
-
-        void push_front(int value)
-        {
-            auto new_node = make_unique<Node>(value);
-            
-            new_node->next = move(head);
-            head = move(new_node);
-
-            size++;
-        }
-
-        void push_back(int value)
-        {
-            auto new_node = make_unique<Node>(value);
-            
-            if (head == nullptr) {
-                head = move(new_node);
-            } else {
-                Node* current = head.get();
-                while (current->next != nullptr) {
-                    current = current->next.get();
-                }
-                current->next = move(new_node);
-            }
-            size++;
-        }
-
-        // Tomo position como el indice, arranco desde 0
-        void insert(int value, int position)
-        {
-            auto new_node = make_unique<Node>(value);
-
-            if (position == 0) {
-                push_front(value);
-                return;
-            }
-            if (position >= size) {
-                cout << "Te pasaste de la lista, lo agrego al final, dormiste" << endl;
-                push_back(value);
-                return;
-            }
-
-            Node *current = head.get();
-            for (int i = 0; i < position - 1; i++) {
-                current = current->next.get();
-            }
-
-            new_node->next = move(current->next);
-            current->next = move(new_node);
-        }
-
-        void erase(int position)
-        {
-            if (position >= size) {
-                cout << "Te pasaste de la lista, borro el ultimo, dormiste" << endl;
-                position = size - 1;
-            }
-
-            if (position == 0) {
-                Node* temp = head.get();
-                head = move(head->next);
-                size--;
-                return;
-            }
-
-            Node* current = head.get();
-            for (int i = 0; i < position - 1; i++) {
-                current = current->next.get();
-            }
-
-            Node* temp = current->next.get();
-            current->next = move(temp->next);
-            
-            size--;
-        }
-
-        void print() {
-            Node *current = head.get();
-            while (current->next != nullptr) {
-                cout << current->value << " -> ";
-                current = current->next.get();
-            }
-            cout << current->value << " -○" << endl;
-        }
+    int size = 0;
 };
+
+unique_ptr<Node> create_node(int value) {
+    auto new_node = make_unique<Node>();
+    new_node->value = value;
+    new_node->next = nullptr;
+    return new_node;
+}
+
+void push_front(List &list, int value) {
+    auto new_node = create_node(value);
+    new_node->next = move(list.head);
+    list.head = move(new_node);
+    list.size++;
+}
+
+void push_back(List &list, int value) {
+    auto new_node = create_node(value);
+    if (list.head == nullptr) {
+        list.head = move(new_node);
+    } else {
+        auto current = list.head.get();
+        while (current->next != nullptr) {
+            current = current->next.get();
+        }
+        current->next = move(new_node);
+    }
+    list.size++;
+}
+
+void insert(List &list, int value, int position) {
+    if (position < 0) throw invalid_argument("Estas muy chistoso vos");
+    if (position > list.size) {
+        cout << "-- Como te fuiste de rango agrego al final" << endl;
+        position = list.size;
+    }
+
+    if (position == 0) {
+        push_front(list, value);
+        return;
+    }
+
+    auto current = list.head.get();
+
+    for (int i = 0; i < position - 1; i++) {
+        current = current->next.get();
+    }
+
+    auto new_node = create_node(value);
+    new_node->next = move(current->next);
+    current->next = move(new_node);
+    list.size++;
+}
+
+void erase(List &list, int position) {
+    if (position < 0) throw invalid_argument("Estas muy chistoso vos");
+    if (position >= list.size) {
+        cout << "-- Como te fuiste de rango borro al final" << endl;
+        position = list.size - 1;
+    };
+
+    if (position == 0) {
+        list.head = move(list.head->next);
+        list.size--;
+        return;
+    }
+
+    auto current = list.head.get();
+    for (int i = 0; i < position - 1; i++) {
+        current = current->next.get();
+    }
+
+    current->next = move(current->next->next);
+    list.size--;
+}
+
+void print_list(List &list) {
+    auto current = list.head.get();
+    while (current != nullptr) {
+        cout << current->value << " ";
+        current = current->next.get();
+    }
+    cout << endl;
+}
 
 int main()
-{
+{    
     List list;
-    cout << "\nDISCLAIMER: El indice de la lista arranca desde 0 en mi logica" << endl << endl;
-    cout << "Creo una lista vacia..." << endl;
-    cout << "Agrego elementos al principio: 1, 2, 3" << endl;
-    list.push_front(1);
-    list.push_front(2); 
-    list.push_front(3);
-    cout << "La lista actual es: ";
-    list.print();
+    cout << "Hago push front de 1, 2, 3, 4, 5" << endl;
+    push_front(list, 1);
+    push_front(list, 2);
+    push_front(list, 3);
+    push_front(list, 4);
+    push_front(list, 5);
+    print_list(list);
 
-    cout << "\nAgrego un elemento en la posicion 2..." << endl;
-    list.insert(4, 2);
-    cout << "La lista actual es: ";
-    list.print();
+    cout << "Hago push back de 6, 7, 8, 9, 10" << endl;
+    push_back(list, 6);
+    push_back(list, 7);
+    push_back(list, 8);
+    push_back(list, 9);
+    push_back(list, 10);
+    print_list(list);
 
-    cout << "\nIntento agregar un elemento en la posicion 10..." << endl;
-    list.insert(10, 10);
-    cout << "La lista actual es: ";
-    list.print();
+    cout << "Hago insert de 11 en la posicion 3" << endl;
+    insert(list, 11, 3);
+    print_list(list);
 
-    cout << "\nBorro el elemento en la posicion 1..." << endl;
-    list.erase(1);
-    cout << "La lista actual es: ";
-    list.print();
+    cout << "Hago erase en la posicion 2" << endl;
+    erase(list, 2);
+    print_list(list);
 
-    cout << "\nIntento borrar un elemento en la posicion 10..." << endl;
-    list.erase(10);
-    cout << "La lista actual es: ";
-    list.print();
+    cout << "Pruebo de insertar en una posicion que no existe" << endl;
+    insert(list, 12, 100);
+    print_list(list);
 
-    cout << "\nAgrego mas elementos al final: 5, 6" << endl;
-    list.push_back(5);
-    list.push_back(6);
-    cout << "La lista actual es: ";
-    list.print();
-    
+    cout << "Pruebo de borrar en una posicion que no existe" << endl;
+    erase(list, 100);
+    print_list(list);
+
     return 0;
 }

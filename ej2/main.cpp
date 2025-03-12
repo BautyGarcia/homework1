@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <stdexcept>
 #include "main.h"
 
 using namespace std;
@@ -37,7 +38,9 @@ int main()
 
             switch (level)
             {
-                // Nota: No sabia si al querer agregar un mensaje de error debia cortar el programa o no, entonces porlas dudas no.
+                case 3:
+                    throw runtime_error("Algo paso, algo malo seguro");
+                    break;
                 case 5:
                     cout << "Ingrese el mensaje de acceso: ";
                     cin.ignore();
