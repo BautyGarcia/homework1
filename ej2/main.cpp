@@ -15,12 +15,12 @@ int main()
             string username;
             int level;
 
-            cout << "0 - DEBUG" << endl;
-            cout << "1 - INFO" << endl;
-            cout << "2 - WARNING" << endl;
-            cout << "3 - ERROR" << endl;
-            cout << "4 - CRITICAL" << endl;
-            cout << "5 - SECURITY" << endl;
+            cout << DEBUG << " - DEBUG" << endl;
+            cout << INFO << " - INFO" << endl;
+            cout << WARNING << " - WARNING" << endl;
+            cout << ERROR << " - ERROR" << endl;
+            cout << CRITICAL << " - CRITICAL" << endl;
+            cout << SECURITY << " - SECURITY" << endl;
             cout << "-1 - SALIR" << endl;
             cout << "Ingrese el tipo de log: ";
 
@@ -31,17 +31,17 @@ int main()
                 break;
             }
 
-            if (level < 0 || level > 5) {
+            if (level < 0 || level > LOG_LEVEL_STRINGS->length()) {
                 cout << "Nivel de log invalido" << endl;
                 continue;
             }
 
             switch (level)
             {
-                case 3:
+                case ERROR:
                     throw runtime_error("Algo paso, algo malo seguro");
                     break;
-                case 5:
+                case SECURITY:
                     cout << "Ingrese el mensaje de acceso: ";
                     cin.ignore();
                     getline(cin, message);
@@ -53,7 +53,7 @@ int main()
                     cout << "Ingrese el mensaje: ";
                     cin.ignore();
                     getline(cin, message);
-                    logMessage(message, INFO);
+                    logMessage(message, static_cast<LogLevel>(level));
                     break;
             }
         }
@@ -80,7 +80,7 @@ void logMessage(string message, string username)
     fstream logs;
     logs.open("logs.txt", ios::out | ios::app);
 
-    logs << "[" << LOG_LEVEL_STRINGS[static_cast<int>(SECURITY)] << "] " << username << " " << message << endl;
+    logs << "[" << LOG_LEVEL_STRINGS[SECURITY] << "] " << username << " " << message << endl;
     logs.close();
 }
 
@@ -89,6 +89,6 @@ void logMeesage(string message, string filename, int codeline)
     fstream logs;
     logs.open("logs.txt", ios::out | ios::app);
 
-    logs << "[" << LOG_LEVEL_STRINGS[static_cast<int>(ERROR)] << "] " << filename << ":" << codeline << " - " << message << endl;
+    logs << "[" << LOG_LEVEL_STRINGS[ERROR] << "] " << filename << ":" << codeline << " - " << message << endl;
     logs.close();
 }

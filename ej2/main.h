@@ -3,12 +3,12 @@
 using namespace std;
 
 enum LogLevel {
-    DEBUG = 0,
-    INFO = 1, 
-    WARNING = 2,
-    ERROR = 3,
-    CRITICAL = 4,
-    SECURITY = 5
+    DEBUG,
+    INFO,
+    WARNING,
+    ERROR,
+    CRITICAL,
+    SECURITY
 };
 
 const string LOG_LEVEL_STRINGS[] = {
