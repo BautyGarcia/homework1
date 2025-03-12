@@ -2,6 +2,6 @@
 
 using namespace std;
 
-class Node;
+struct Node;
 
-class List;
+struct List;
