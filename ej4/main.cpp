@@ -69,6 +69,8 @@ int main() {
 
     delete[] c1;
     delete[] c2;
+    c1 = nullptr;
+    c2 = nullptr;
 
     return 0;
 }
