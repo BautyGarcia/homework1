@@ -21,32 +21,32 @@ unique_ptr<Node> create_node(int value) {
     return new_node;
 }
 
-void push_front(List &list, int value) {
+void push_front(unique_ptr<List> &list, int value) {
     auto new_node = create_node(value);
-    new_node->next = std::move(list.head);
-    list.head = std::move(new_node);
-    list.size++;
+    new_node->next = std::move(list->head);
+    list->head = std::move(new_node);
+    list->size++;
 }
 
-void push_back(List &list, int value) {
+void push_back(unique_ptr<List> &list, int value) {
     auto new_node = create_node(value);
-    if (list.head == nullptr) {
-        list.head = std::move(new_node);
+    if (list->head == nullptr) {
+        list->head = std::move(new_node);
     } else {
-        auto current = list.head.get();
+        auto current = list->head.get();
         while (current->next != nullptr) {
             current = current->next.get();
         }
         current->next = std::move(new_node);
     }
-    list.size++;
+    list->size++;
 }
 
-void insert(List &list, int value, int position) {
+void insert(unique_ptr<List> &list, int value, int position) {
     if (position < 0) throw invalid_argument("Estas muy chistoso vos");
-    if (position > list.size) {
+    if (position > list->size) {
         cout << "-- Como te fuiste de rango agrego al final" << endl;
-        position = list.size;
+        position = list->size;
     }
 
     if (position == 0) {
@@ -54,7 +54,7 @@ void insert(List &list, int value, int position) {
         return;
     }
 
-    auto current = list.head.get();
+    auto current = list->head.get();
 
     for (int i = 0; i < position - 1; i++) {
         current = current->next.get();
@@ -63,33 +63,33 @@ void insert(List &list, int value, int position) {
     auto new_node = create_node(value);
     new_node->next = std::move(current->next);
     current->next = std::move(new_node);
-    list.size++;
+    list->size++;
 }
 
-void erase(List &list, int position) {
+void erase(unique_ptr<List> &list, int position) {
     if (position < 0) throw invalid_argument("Estas muy chistoso vos");
-    if (position >= list.size) {
+    if (position >= list->size) {
         cout << "-- Como te fuiste de rango borro al final" << endl;
-        position = list.size - 1;
+        position = list->size - 1;
     };
 
     if (position == 0) {
-        list.head = std::move(list.head->next);
-        list.size--;
+        list->head = std::move(list->head->next);
+        list->size--;
         return;
     }
 
-    auto current = list.head.get();
+    auto current = list->head.get();
     for (int i = 0; i < position - 1; i++) {
         current = current->next.get();
     }
 
     current->next = std::move(current->next->next);
-    list.size--;
+    list->size--;
 }
 
-void print_list(List &list) {
-    auto current = list.head.get();
+void print_list(unique_ptr<List> &list) {
+    auto current = list->head.get();
     while (current != nullptr) {
         cout << current->value << " ";
         current = current->next.get();
@@ -101,44 +101,44 @@ int main()
 {    
     unique_ptr<List> list = make_unique<List>();
     cout << "Hago push front de 1, 2, 3, 4, 5" << endl;
-    push_front(*list, 1);
-    push_front(*list, 2);
-    push_front(*list, 3);
-    push_front(*list, 4);
-    push_front(*list, 5);
-    print_list(*list);
+    push_front(list, 1);
+    push_front(list, 2);
+    push_front(list, 3);
+    push_front(list, 4);
+    push_front(list, 5);
+    print_list(list);
 
     cout << "Hago push back de 6, 7, 8, 9, 10" << endl;
-    push_back(*list, 6);
-    push_back(*list, 7);
-    push_back(*list, 8);
-    push_back(*list, 9);
-    push_back(*list, 10);
-    print_list(*list);
+    push_back(list, 6);
+    push_back(list, 7);
+    push_back(list, 8);
+    push_back(list, 9);
+    push_back(list, 10);
+    print_list(list);
 
     cout << "Hago insert de 11 en la posicion 3" << endl;
-    insert(*list, 11, 3);
-    print_list(*list);
+    insert(list, 11, 3);
+    print_list(list);
 
     cout << "Hago erase en la posicion 2" << endl;
-    erase(*list, 2);
-    print_list(*list);
+    erase(list, 2);
+    print_list(list);
 
     cout << "Pruebo de insertar en una posicion que no existe" << endl;
-    insert(*list, 12, 100);
-    print_list(*list);
+    insert(list, 12, 100);
+    print_list(list);
 
     cout << "Pruebo de borrar en una posicion que no existe" << endl;
-    erase(*list, 100);
-    print_list(*list);
+    erase(list, 100);
+    print_list(list);
 
     cout << "Pruebo de insertar en el borde" << endl;
-    insert(*list, 0, list->size);
-    print_list(*list);
+    insert(list, 0, list->size);
+    print_list(list);
 
     cout << "Pruebo de borrar en el borde" << endl;
-    erase(*list, list->size - 1);
-    print_list(*list);
+    erase(list, list->size - 1);
+    print_list(list);
 
     return 0;
 }
