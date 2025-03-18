@@ -26,7 +26,7 @@ int main() {
                 break;
             }
 
-            if (level < 0 || level >= static_cast<int>(LogLevel::COUNT)) {
+            if (level < 0 || level >= COUNT) {
                 cout << "Nivel de log invalido" << endl;
                 continue;
             }
