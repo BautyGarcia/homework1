@@ -4,6 +4,7 @@
 
 using namespace std;
 
+// Comparo strings usando los metodos de string
 bool are_equal(string s1, string s2) {
     if (s1.length() != s2.length()) return false;
 
@@ -14,6 +15,8 @@ bool are_equal(string s1, string s2) {
     return false;
 }
 
+// Comparo caracter por caracter, si no son iguales o de mismo largo, devuelvo false
+// Mientras sigan siendo iguales, avanzo el puntero y llamo recursivamente
 bool are_equal(char* s1, char* s2) {
     if (strlen(s1) != strlen(s2)) return false;
 
@@ -24,14 +27,16 @@ bool are_equal(char* s1, char* s2) {
     return false;
 }
 
-constexpr bool are_equal_compilation(const char* s1, const char* s2) {
+// Comparo caracter por caracter, si no son iguales o de mismo largo, devuelvo false
+// Mientras sigan siendo iguales, avanzo el puntero y llamo recursivamente
+constexpr bool are_equal(const char* s1, const char* s2) {
     if (*s1 == '\0' && *s2 == '\0') return true;
     
     if (*s1 == '\0' || *s2 == '\0') return false;
 
     if (*s1 != *s2) return false;
 
-    return are_equal_compilation(s1 + 1, s2 + 1);
+    return are_equal(s1 + 1, s2 + 1);
 }
 
 int main() {
@@ -45,6 +50,8 @@ int main() {
         c1[i] = s1[i];
         c2[i] = s2[i];
     }
+
+    // Char* vs String
 
     auto start = chrono::high_resolution_clock::now();
     cout << are_equal(c1, c2) << endl;
@@ -62,7 +69,7 @@ int main() {
     constexpr const char* compile_s2 = "Hola soy pepe, me gustan los perros y las golosinas. Nose que mas texto poner ayuda.";
     
     auto start3 = chrono::high_resolution_clock::now();
-    constexpr bool result = are_equal_compilation(compile_s1, compile_s2);
+    constexpr bool result = are_equal(compile_s1, compile_s2);
     cout << result << endl;
     auto end3 = chrono::high_resolution_clock::now();
     cout << "(Compile-time) Time taken: " << chrono::duration_cast<chrono::nanoseconds>(end3 - start3).count() << " nanoseconds" << endl;

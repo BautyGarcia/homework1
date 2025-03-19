@@ -45,12 +45,12 @@ int main() {
         }
     }
     catch (const exception &e) {
-        // No puse un ejemplo pero funciona, si queres registrar un error a voluntad, usa logMeesage pero no corta el programa
         logMeesage(e.what(), __FILE__, __LINE__);
         return 1;
     }
 }
 
+// Wrapper para loggear un mensaje de seguridad
 void handleSecurity() {
     string message;
     string username;
@@ -62,6 +62,7 @@ void handleSecurity() {
     logMessage(message, username);
 }
 
+// Wrapper para loggear un mensaje de un tipo normal
 void handleMessage(LogLevel level) {
     string message;
     cout << "Ingrese el mensaje: ";
@@ -70,6 +71,8 @@ void handleMessage(LogLevel level) {
     logMessage(message, static_cast<LogLevel>(level));
 }
 
+
+// Loggea un mensaje de un tipo normal
 void logMessage(string message, LogLevel level) {
     fstream logs;
     logs.open("logs.txt", ios::out | ios::app);
@@ -78,6 +81,7 @@ void logMessage(string message, LogLevel level) {
     logs.close();
 }
 
+// Loggea un mensaje de seguridad
 void logMessage(string message, string username) {
     fstream logs;
     logs.open("logs.txt", ios::out | ios::app);
@@ -86,6 +90,7 @@ void logMessage(string message, string username) {
     logs.close();
 }
 
+// Loggea un mensaje de error
 void logMeesage(string message, string filename, int codeline) {
     fstream logs;
     logs.open("logs.txt", ios::out | ios::app);

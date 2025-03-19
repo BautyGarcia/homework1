@@ -21,6 +21,7 @@ unique_ptr<Node> create_node(int value) {
     return new_node;
 }
 
+// Muevo el ownership de la cabeza de la lista al nuevo nodo
 void push_front(unique_ptr<List> &list, int value) {
     auto new_node = create_node(value);
     new_node->next = std::move(list->head);
@@ -28,20 +29,25 @@ void push_front(unique_ptr<List> &list, int value) {
     list->size++;
 }
 
+// Me muevo hasta el ultimo nodo y agrego el nuevo nodo, con caso base cuando la lista esta vacia
 void push_back(unique_ptr<List> &list, int value) {
     auto new_node = create_node(value);
     if (list->head == nullptr) {
         list->head = std::move(new_node);
-    } else {
-        auto current = list->head.get();
-        while (current->next != nullptr) {
-            current = current->next.get();
-        }
-        current->next = std::move(new_node);
+        return;
     }
+
+    auto current = list->head.get();
+    while (current->next != nullptr) {
+        current = current->next.get();
+    }
+
+    current->next = std::move(new_node);
     list->size++;
 }
 
+// Me muevo hasta el anterior a la posicion que quiero insertar y agrego el nuevo nodo, con caso base cuando quiero insertar al principio
+// Tambien hago que si la posicion es mayor a la cantidad de nodos, la igualo al largo de la lista para que se agregue al final
 void insert(unique_ptr<List> &list, int value, int position) {
     if (position < 0) throw invalid_argument("Estas muy chistoso vos");
     if (position > list->size) {
@@ -66,6 +72,8 @@ void insert(unique_ptr<List> &list, int value, int position) {
     list->size++;
 }
 
+// Me muevo hasta el anterior a la posicion que quiero borrar, con caso base cuando quiero borrar al principio
+// Tambien hago que si la posicion es mayor a la cantidad de nodos, la igualo a uno menos del largo de la lista para que se borre al final
 void erase(unique_ptr<List> &list, int position) {
     if (position < 0) throw invalid_argument("Estas muy chistoso vos");
     if (position >= list->size) {
@@ -97,6 +105,7 @@ void print_list(unique_ptr<List> &list) {
     cout << endl;
 }
 
+// NOTA: Tomo las posiciones desde 0
 int main()
 {    
     unique_ptr<List> list = make_unique<List>();

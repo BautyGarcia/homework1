@@ -4,7 +4,7 @@
 
 Termine haciendo la misma funcion del a) usando char* y string, me di cuenta que el tiempo de ejecucion de char* es algo menor que el de string, que tiene sentido ya que char* es una estructura mas de bajo nivel que string que es una libreria de C++. Pero no es significativo, por lo que vi usar string es mucho menos "propenso a errores" que char*. Como la diferencia de tiempo es minima, me parece mas conveniente usar string.
 
-Igualmente dejo el codigo con char* para que se pueda ver :p
+Igualmente dejo el codigo con char* como forma de "justificacion" de la diferencia de tiempo.
 
 ## C)
 
